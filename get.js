@@ -13,9 +13,8 @@ let knex = require('knex')({
 const MEMBERS_AREA_REGEX = /^ReactDOM\.render\(React.createElement\(MembersArea.MembersAreaInfo, ({.+})/;
 
 function expect(res, statusCode) {
-  console.log(_.keys(res));
   if (res.statusCode !== statusCode) {
-    throw new Error(`non-200 response for POST ${res.path}`);
+    throw new Error(`non-200 response for ${res.req.method} ${res.req.path}`);
   }
 }
 
@@ -60,12 +59,16 @@ function getPeopleInGym() {
     });
     if (peopleInGym === -1) {
       throw new Error('unable to find MembersAreaInfo');
+    } else if (peopleInGym === 'Fewer than 20') {
+      peopleInGym = 19;
+    } else if (peopleInGym === '100+') {
+      peopleInGym = 100;
     }
     return peopleInGym;
   });
 }
 
-function exec() {
+function getAndSave() {
   let now = new Date();
   return getPeopleInGym()
   .then(peopleInGym => {
@@ -77,11 +80,10 @@ function exec() {
   })
   .catch(err => {
     console.log(now, err);
+  })
+  .finally(() => {
+    knex.destroy();
   });
 }
 
-// run the thing forevah
-exec();
-setInterval(() => {
-  exec();
-}, 10 * 60 * 1000); // 10 minutes
+getAndSave();
