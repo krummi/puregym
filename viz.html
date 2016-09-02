@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <title>puregym - people in gym visualizer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="data.js"></script>
+  </head>
+  <body>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+    <script type="text/javascript">
+    $(function () {
+      $.getJSON('/data.json', function (rows) {
+      let data = _.map(rows, function (row) {
+        return [(new Date(row.time).getTime()), row.people_in_gym];
+      });
+      $('#container').highcharts({
+        chart: {
+          zoomType: 'x'
+        },
+        title: {
+          text: 'People in gym over time'
+        },
+        subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+        },
+        xAxis: {
+          type: 'datetime',
+          dateTimeLabelFormats: {
+            month: '%e. %b',
+            year: '%b'
+          },
+          title: {
+            text: 'Date'
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Exchange rate'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        series: [{
+          type: 'area',
+          name: 'Members',
+          data: data
+        }]
+      });
+    });
+  });
+    </script>
+  </body>
+</html>
