@@ -1,0 +1,5 @@
+CREATE TABLE puregym (
+  id SERIAL PRIMARY KEY,
+  time TIMESTAMP WITH TIME ZONE,
+  people_in_gym INTEGER
+);

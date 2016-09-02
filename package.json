@@ -1,0 +1,19 @@
+{
+  "name": "puregym",
+  "version": "1.0.0",
+  "description": "",
+  "main": "get.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.3",
+    "cheerio": "^0.22.0",
+    "knex": "^0.11.10",
+    "lodash": "^4.15.0",
+    "pg": "^6.1.0",
+    "request": "^2.74.0"
+  }
+}
