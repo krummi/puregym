@@ -15,6 +15,11 @@ app.get('/data.json', (req, res, next) => {
   console.log('serving request for: /data.json');
   knex('puregym').select('*')
   .then(rows => {
+    // Adjust the time according to the time zone
+    _.forEach(rows, row => {
+      row.time.setTime(row.time.getTime() - row.time.getTimezoneOffset() * 60 * 1000);
+      row.time = row.time.toISOString();
+    });
     res.json(rows);
   })
   .catch(err => {
